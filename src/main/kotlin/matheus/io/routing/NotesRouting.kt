@@ -4,7 +4,7 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import matheus.io.NoteEntity
+import matheus.io.entities.NoteEntity
 import matheus.io.db.DatabaseConnection
 import matheus.io.model.Note
 import matheus.io.model.NoteRequest

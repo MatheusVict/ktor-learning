@@ -1,4 +1,4 @@
-package matheus.io
+package matheus.io.entities
 
 import org.ktorm.schema.Table
 import org.ktorm.schema.int

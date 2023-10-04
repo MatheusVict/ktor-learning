@@ -6,6 +6,7 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
 import matheus.io.plugins.*
+import matheus.io.routing.authenticationRoutes
 import matheus.io.routing.notesRoutes
 import org.ktorm.database.Database
 import org.ktorm.dsl.*
@@ -51,4 +52,5 @@ fun Application.module() {
     configureRouting()
     contactUsModule()
     notesRoutes()
+    authenticationRoutes()
 }
