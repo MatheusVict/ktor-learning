@@ -9,10 +9,7 @@ import matheus.io.db.DatabaseConnection
 import matheus.io.model.Note
 import matheus.io.model.NoteRequest
 import matheus.io.model.NoteResponse
-import org.ktorm.dsl.from
-import org.ktorm.dsl.insert
-import org.ktorm.dsl.map
-import org.ktorm.dsl.select
+import org.ktorm.dsl.*
 
 fun Application.notesRoutes() {
 
@@ -52,6 +49,26 @@ fun Application.notesRoutes() {
 
                 call.respond(status = io.ktor.http.HttpStatusCode.InternalServerError, noteResponse)
             }
+        }
+
+        get("/notes/{id}") {
+            val id = call.parameters["id"]?.toInt() ?: -1
+
+            db.from(NoteEntity)
+                .select()
+                .where {
+                    NoteEntity.id eq id
+                }
+                .map {
+                    val id = it[NoteEntity.id]
+                    val note = it[NoteEntity.note]
+                    Note(
+                        id = id ?: -1,
+                        note = note ?: ""
+                    )
+                }.firstOrNull()?.let {
+                    call.respond(it)
+                } ?: call.respond(io.ktor.http.HttpStatusCode.NotFound)
         }
     }
 }
