@@ -97,5 +97,19 @@ fun Application.notesRoutes() {
                 call.respond(status = io.ktor.http.HttpStatusCode.InternalServerError, noteResponse)
             }
         }
+
+        delete("/notes/{id}") {
+            val id = call.parameters["id"]?.toInt() ?: -1
+
+            db.delete(NoteEntity) {
+                it.id eq id
+            }
+
+            val noteResponse = NoteResponse<String>(
+                data = "Note deleted successfully",
+                success = true
+            )
+            call.response.status(io.ktor.http.HttpStatusCode.OK)
+        }
     }
 }
