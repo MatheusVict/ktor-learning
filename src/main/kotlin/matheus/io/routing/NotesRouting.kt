@@ -70,5 +70,32 @@ fun Application.notesRoutes() {
                     call.respond(it)
                 } ?: call.respond(io.ktor.http.HttpStatusCode.NotFound)
         }
+
+        put("/notes/{id}") {
+            val id = call.parameters["id"]?.toInt() ?: -1
+
+            val updatedNote = call.receive<NoteRequest>()
+
+            val rowsEffected = db.update(NoteEntity) {
+                set(it.note, updatedNote.note)
+                where {
+                    it.id eq id
+                }
+            }
+
+            if (rowsEffected > 0) {
+                val noteResponse = NoteResponse<String>(
+                    data = updatedNote.note,
+                    success = true
+                )
+                call.respond(status = io.ktor.http.HttpStatusCode.OK, noteResponse)
+            } else {
+                val noteResponse = NoteResponse<String>(
+                    data = updatedNote.note,
+                    success = false
+                )
+                call.respond(status = io.ktor.http.HttpStatusCode.InternalServerError, noteResponse)
+            }
+        }
     }
 }
