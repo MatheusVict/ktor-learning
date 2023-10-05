@@ -1,9 +1,11 @@
 package matheus.io.routing
 
 import com.typesafe.config.ConfigFactory
+import io.ktor.auth.jwt.*
 import io.ktor.http.*
 import io.ktor.http.HttpStatusCode.Companion.OK
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.config.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -87,7 +89,13 @@ fun Application.authenticationRoutes() {
             val token = tokenManager.generateJWTToken(user)
 
             call.respond(status = OK, TokenResponse(token) ?: "")
+        }
 
+        authenticate {
+            get("/me") {
+                val principal = call.principal<Principal>()
+                call.respond("$principal" ?: "")
+            }
         }
     }
 }
