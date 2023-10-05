@@ -9,4 +9,6 @@ data class UserCredentials(
     val password: String
 ) {
     fun hashPassword(): String = BCrypt.hashpw(password, BCrypt.gensalt())
+
+    fun isvalidPassword(hashedPassword: String): Boolean = BCrypt.checkpw(password, hashedPassword)
 }

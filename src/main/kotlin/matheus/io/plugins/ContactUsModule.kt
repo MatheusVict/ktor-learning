@@ -21,12 +21,6 @@ fun Application.contactUsModule() {
         get("/hello/{page}") {
             call.respondText("Hello ${call.parameters["page"]}")
         }
-
-        post("/login") {
-            val userInfo = call.receive<Login>()
-            call.respond(status = HttpStatusCode.OK, message = "Login successful! $userInfo")
-        }
-
         get("/headers") {
             call.response.headers.append("server-name", "Ktor server")
             call.respond(status = HttpStatusCode.OK, message = "Headers set!")
